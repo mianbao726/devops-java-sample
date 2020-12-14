@@ -39,7 +39,7 @@ pipeline {
             steps {
                 container ('maven') {
                     sh 'mvn -Dmaven.test.skip=true -gs `pwd`/configuration/settings.xml clean package'
-                    sh 'docker build -f Dockerfile-online -t $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
+                    sh 'docker build -f Dockerfile-online -t $REGISTRY/zhuwj2012/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
                     withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID" ,)]) {
                         sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
                         sh 'docker push  $REGISTRY/zhuwj2012/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER'
@@ -54,7 +54,7 @@ pipeline {
            }
            steps{
                 container ('maven') {
-                  sh 'docker tag  $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:latest '
+                  sh 'docker tag  $REGISTRY/zhuwj2012/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER $REGISTRY/zhuwj2012/$APP_NAME:latest '
                   sh 'docker push  $REGISTRY/zhuwj2012/$APP_NAME:latest '
                 }
            }
@@ -84,8 +84,8 @@ pipeline {
                     sh 'git tag -a $TAG_NAME -m "$TAG_NAME" '
                     sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@github.com/$GITHUB_ACCOUNT/devops-java-sample.git --tags --ipv4'
                   }
-                sh 'docker tag  $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:$TAG_NAME '
-                sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:$TAG_NAME '
+                sh 'docker tag  $REGISTRY/zhuwj2012/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER $REGISTRY/zhuwj2012/$APP_NAME:$TAG_NAME '
+                sh 'docker push  $REGISTRY/zhuwj2012E/$APP_NAME:$TAG_NAME '
           }
           }
         }
